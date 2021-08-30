@@ -2,3 +2,5 @@
 *.shp filter=lfs diff=lfs merge=lfs -text
 *.dbf filter=lfs diff=lfs merge=lfs -text
 data/CFF_SPP_Round4_Data/CFF_Update_2021_04_30/parks_final_2021_04_30.dbf filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.csv filter=lfs diff=lfs merge=lfs -text

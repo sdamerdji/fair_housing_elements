@@ -16,3 +16,5 @@ Inventory sites: http://housing.abag.ca.gov/#downloads
 
 Bay area map: https://gis.data.ca.gov/datasets/CDTFA::city-and-county-boundaries/about
 I actually don't recall where the bay area map comes from, but the above link should have it as well.
+
+Walkability: https://catalog.data.gov/dataset/walkability-index
