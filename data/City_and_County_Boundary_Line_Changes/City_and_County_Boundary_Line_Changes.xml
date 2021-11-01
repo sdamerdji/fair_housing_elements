@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+    <idinfo>
+        <citation>
+            <citeinfo>
+                <origin/>
+                <pubdate>20150306</pubdate>
+                <title>City and County Line Boundary Changes</title>
+            </citeinfo>
+        </citation>
+        <descript>
+            <abstract>This map includes change areas for city boundaries and county line adjustments filed in accordance with Government Code 54900. The boundaries in this map are based on the State Board of Equalization's tax rate area maps for the assessment roll year specified in the COFILE field. The information is updated regularly within 10 days of the most recent BOE acknowledgement date. Some differences may occur between actual recorded boundaries and boundary placement in the tax rate area GIS map. Tax rate area boundaries are representations of taxing jurisdictions for the purpose of determining property tax assessments and should not be used to determine precise city or county boundary line locations. BOE_CityAnx Data Dictionary:  COFILE = county number -  assessment roll year - file number; CHANGE = affected city, unincorporated county, or boundary correction; EFFECTIVE = date the change was effective by resolution or ordinance; RECEIVED = date the change was received at the BOE; ACKNOWLEDGED = date the BOE accepted the filing for inclusion into the tax rate area system; NOTES: additional clarifying information about the action. BOE_CityCounty Data Dictionary:  COUNTY = county name; CITY = city name or unincorporated territory; COPRI = county number followed by the 3-digit city primary number used in the BOE's 6-digit tax rate area numbering system (for the purpose of this map, unincorporated areas are assigned 000 to indicate that the area is not within a city).</abstract>
+            <purpose>City boundary changes and county boundary line adjustments filed with the Board of Equalization per Government Code 54900.</purpose>
+        </descript>
+        <status>
+            <progress>Complete</progress>
+            <update>As needed</update>
+        </status>
+        <keywords>
+            <theme>
+                <themekt>ISO 19115 Topic Categories</themekt>
+                <themekey>boundaries</themekey>
+            </theme>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>incorporated</themekey>
+                <themekey>unincorporated</themekey>
+                <themekey>city</themekey>
+                <themekey>cities</themekey>
+                <themekey>boundary</themekey>
+                <themekey>boundaries</themekey>
+                <themekey>county</themekey>
+                <themekey>counties</themekey>
+                <themekey>California</themekey>
+                <themekey>CAOpenData</themekey>
+            </theme>
+        </keywords>
+        <accconst>None</accconst>
+        <useconst>Every reasonable effort has been made to assure the accuracy of the maps and data provided; nevertheless, some information may not be accurate. The California State Board of Equalization assumes no responsibility arising from use of this information. THE MAPS AND ASSOCIATED DATA ARE PROVIDED WITHOUT WARRANTY OF ANY KIND, either expressed or implied, including but not limited to, the implied warranties of merchantability and fitness for a particular purpose. Before making decisions using the information provided on this map, contact the Board of Equalization to confirm the validity of the data provided.</useconst>
+        <ptcontac>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>California State Board of Equalization </cntorg>
+                    <cntper>Tax Area Services Section </cntper>
+                </cntorgp>
+                <cntaddr>
+                    <addrtype>physical</addrtype>
+                    <city>Sacramento</city>
+                    <state>CA</state>
+                    <postal>95814</postal>
+                </cntaddr>
+                <cntvoice> (916) 274-3250</cntvoice>
+                <cntemail>TASS@boe.ca.gov</cntemail>
+            </cntinfo>
+        </ptcontac>
+        <datacred>California State Board of Equalization, Tax Area Services Section, TASS@boe.ca.gov, (916) 274-3250</datacred>
+    </idinfo>
+    <eainfo>
+        <detailed>
+            <attr>
+                <attrdef>City name</attrdef>
+            </attr>
+        </detailed>
+    </eainfo>
+    <metainfo>
+        <metd>20211020</metd>
+        <metc>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>California State Board of Equalization </cntorg>
+                    <cntper>Tax Area Services Section </cntper>
+                </cntorgp>
+                <cntaddr>
+                    <addrtype>physical</addrtype>
+                    <city>Sacramento</city>
+                    <state>CA</state>
+                    <postal>95814</postal>
+                </cntaddr>
+                <cntvoice> (916) 274-3250</cntvoice>
+                <cntemail>TASS@boe.ca.gov</cntemail>
+            </cntinfo>
+        </metc>
+        <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+        <metstdv>FGDC-STD-001-1998</metstdv>
+        <mettc>local time</mettc>
+        <metuc>The information found in the State Board of Equalization (BOE) web site is general and current as of the date the information was placed on the BOE web site. The applicable laws are complex and subject to change. If there is a conflict between the law and the information found in the BOE web site, any decisions will be based on the law and not the information found in the BOE web site.</metuc>
+    </metainfo>
+</metadata>
