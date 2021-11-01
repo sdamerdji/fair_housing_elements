@@ -8,8 +8,15 @@ from scipy.stats import pearsonr
 from matplotlib.colors import LinearSegmentedColormap
 import json
 
-INVENTORY, POLLUTION, BAY, PARKS, WALKS, SCHOOLS, MATCHES = None, None, None, None, None, None, None
+INVENTORY, POLLUTION, CITIES, PARKS, WALKS, SCHOOLS, OPPORTUNITY = None, None, None, None, None, None, None
 PARENT_DIR = os.getcwd()
+
+def get_opportunity():
+    global OPPORTUNITY
+    if OPPORTUNITY is None:
+        opportunity = gpd.read_file(PARENT_DIR + "/data/final_2021_public.shp/final_2021_public.shp")
+        OPPORTUNITY = opportunity.to_crs(epsg=3857)
+    return OPPORTUNITY
 
 def get_schools():
     global SCHOOLS
@@ -42,40 +49,10 @@ def get_walk_scores():
     global WALKS
     if WALKS is None:
         walks = pd.read_csv(
-            PARENT_DIR + "/data/EPA_SmartLocationDatabase_V3_Jan_2021_Final.csv"
+            PARENT_DIR + "/data/EPA_SmartLocationDatabase_V3_Jan_2021_Final.shp"
         )
         WALKS=walks
     return WALKS
-
-def get_matches():
-    global MATCHES
-    if MATCHES is None:
-        with open(PARENT_DIR + '/data/matches.json', 'rb') as f:
-            matches = json.load(f)
-            MATCHES=matches
-    return MATCHES
-
-def get_matches_for(city):
-    return get_matches()[city]
-
-def sites_with_development_indicator(city):
-    matches = get_matches_for(city)
-    sites = get_5th_cycle_sites_for(city)
-    sites['permitted'] = sites.index.isin(matches)
-    return sites
-
-def get_elementary_schools_for(city):
-    schools = get_schools()
-    elementary_schools = schools[schools.DistrictNa.str.contains('Elementary')]
-    city_limits = get_city_limits(city)
-    result = gpd.overlay(city_limits, elementary_schools, how='intersection', keep_geom_type=False)
-    return result
-
-def get_schools_for(city):
-    schools = get_schools()
-    city_limits = get_city_limits(city)
-    result = gpd.overlay(city_limits, schools, how='intersection', keep_geom_type=False)
-    return result
 
 def get_pollution_map():
     global POLLUTION
@@ -86,20 +63,33 @@ def get_pollution_map():
         POLLUTION = pollution.to_crs(epsg=3857)
     return POLLUTION
 
-def get_bay_map():
-    global BAY
-    if BAY is None:
-        bay = gpd.read_file(
-            './data/bay_area_map/bay.shp'
+def get_cities_boundaries():
+    global CITIES
+    if CITIES is None:
+        cities = gpd.read_file(
+            './data/City_and_County_Boundary_Line_Changes/BOE_CityCounty_10202021.shp'
         )
-        bay['city'] = bay['city'].str.title()
-        bay['county'] = bay['county'].str.title()
-        BAY = bay.to_crs(epsg=3857)
-    return BAY
+        cities['city'] = cities['CITY'].str.title()
+        cities['county'] = cities['COUNTY'].str.title()
+        CITIES = cities.to_crs(epsg=3857)
+    return CITIES
 
 def get_city_limits(city):
-    bay = get_bay_map()
-    return bay.query(f'city == "{city}"').to_crs(epsg=3857)
+    cities = get_cities_boundaries()
+    return cities.query(f'city == "{city}"').to_crs(epsg=3857)
+
+def get_elementary_schools_for(city):
+    schools = get_schools()
+    elementary_schools = schools[schools.DistrictNa.str.contains('Elementary')]
+    city_limits = get_city_limits(city)
+    result = gpd.overlay(city_limits, elementary_schools, how='intersection', keep_geom_type=False)
+    return result
+
+def get_opportunity_for(city):
+    opportunity = get_opportunity()
+    city_limits = get_city_limits(city)
+    result = gpd.overlay(city_limits, opportunity, how='intersection', keep_geom_type=False)
+    return result
 
 def get_parks_for(city):
     return get_parks().query(f'city == "{city}"')
@@ -123,21 +113,20 @@ def get_city_sites_for_cycle(city, cycle):
 
 def get_cities():
     cities_sites = set(get_sites().jurisdict.unique())
-    cities_mapped = set(get_bay_map().city.unique())
+    cities_mapped = set(get_cities_boundaries().city.unique())
     cities = cities_sites.intersection(cities_mapped)
     cities = list(cities)
     cities.sort()
     return cities
 
 def get_pollution_for(city):
-    city_shape = get_bay_map().query(f'city == "{city}"')
+    city_shape = get_city_limits(city)
     city_shape = city_shape[['city', 'geometry']]
     result = gpd.overlay(city_shape, get_pollution_map(), how='intersection', keep_geom_type=False)
     if result.size:
         return result
     return
 
-"""Code lifted from project here: https://github.com/YIMBYdata/housing-elements/blob/main/housing_elements/data_loading_utils.py"""
 
 def clean_real_cap(city, sites):
     sites = sites.copy()
@@ -182,8 +171,6 @@ def fix_el_cerrito_realcap(sites: pd.DataFrame) -> pd.DataFrame:
     sites.relcapcty = sites.relcapcty.str.split(' ').str[0]
     return sites
 
-#To do: Check that geometry changes after intsection for at least one of the cities that pop up in print_pollution_map_city_incorrect()
-
 def print_pollution_map_city_incorrect():
     """This function shows that census tracts extend beyond a single city."""
     for city in get_cities():
@@ -222,9 +209,9 @@ def get_pastel_cmap():
 def plot_sites_on_arbitrary_map(city, cycle, df, variable, ax=None):
     if ax is None:
         fig, ax = plt.subplots(figsize=(15, 15))
-    plt.rcParams.update({'font.size': 15})
+    plt.rcParams.update({'font.size': 25})
     df.plot(ax=ax, column=df[variable], legend=True, cmap=get_pastel_cmap())
-    plt.title(f'{cycle}th Cycle Site Inventory for {city} against a map of {variable}')
+    plt.title(variable)
     plt.rcParams.update({'font.size': 10})
     ax.set_yticklabels([])
     ax.set_xticklabels([])
@@ -237,8 +224,12 @@ def plot_sites_on_arbitrary_city_map(city, cycle, df, variable):
     city_limits.plot(color='beige', ax=ax)
     plot_sites_on_arbitrary_map(city, cycle, df, variable, ax)
 
+def plot_sites_on_opportunity(city, cycle):
+    opportunity = get_opportunity_for(city)
+    plot_sites_on_arbitrary_city_map(city, cycle, opportunity, 'index')
+
 def plot_sites_on_schools(city, cycle, variable):
-    schools = get_schools_for(city)
+    schools = get_elementary_schools_for(city)
     plot_sites_on_arbitrary_city_map(city, cycle, schools, variable)
 
 def plot_sites_on_arbitrary_enviro_map(city, cycle, variable):
@@ -249,8 +240,8 @@ def plot_sites_and_parks(city, cycle):
     parks = get_parks_for(city)
     sites = get_city_sites_for_cycle(city, cycle)
     fig, ax = plt.subplots(figsize=(15, 15))
-    plt.rcParams.update({'font.size': 15})
-    plt.title(f'Parks in {city} vs {cycle}th cycle site inventory')
+    plt.rcParams.update({'font.size': 25})
+    plt.title(f'Parks in {city}')
     sites.plot(ax=ax, color='steelblue')
     parks.plot(ax=ax, color='green')
     ctx.add_basemap(ax=ax, source=ctx.providers.CartoDB.PositronNoLabels, attribution=False)
@@ -273,6 +264,5 @@ def plot_sites_on_traffic_map(city, cycle):
     plot_sites_on_arbitrary_enviro_map(city, cycle, 'Traffic')
 
 def plot_sites_walkability(city, cycle):
-    #plot_sites_on_arbitrary_map(city, cycle, pollution, variable)
-    pass
+    plot_sites_on_arbitrary_map(city, cycle, pollution, variable)
 
