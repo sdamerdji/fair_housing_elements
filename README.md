@@ -14,10 +14,6 @@ Inventory sites: http://housing.abag.ca.gov/#downloads
 
 Opportunity map: https://belonging.berkeley.edu/2021-tcac-opportunity-map
 
-Bay area map: https://gis.data.ca.gov/datasets/CDTFA::city-and-county-boundaries/about
-
-<<<<<<< HEAD
+City boundaries: https://gis.data.ca.gov/datasets/CDTFA::boe-citycounty-10202021/about
 
 Walkability: https://catalog.data.gov/dataset/walkability-index
-=======
->>>>>>> 6dd9acb147b3bd6e050c58535fb65cfde1f60bb8
