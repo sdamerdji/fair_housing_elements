@@ -12,9 +12,11 @@ Pollution: https://oehha.ca.gov/calenviroscreen/report/draft-calenviroscreen-40
 
 Inventory sites: http://housing.abag.ca.gov/#downloads
 
+Opportunity map: https://belonging.berkeley.edu/2021-tcac-opportunity-map
+
 Bay area map: https://gis.data.ca.gov/datasets/CDTFA::city-and-county-boundaries/about
+
 <<<<<<< HEAD
-I actually don't recall where the bay area map comes from, but the above link should have it as well.
 
 Walkability: https://catalog.data.gov/dataset/walkability-index
 =======
